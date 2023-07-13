@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  asyncdemo.api:
+    image: ${DOCKER_REGISTRY-}asyncdemoapi
+    build:
+      context: .
+      dockerfile: AsyncDemo.Api/Dockerfile
+
+  asyncdemo.messageprocessor:
+    image: ${DOCKER_REGISTRY-}asyncdemo-messageprocessor
+    build:
+      context: .
+      dockerfile: AsyncDemo.MessageProcessor/Dockerfile
+  
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+    - "ACCEPT_EULA=Y"
+    - "MSSQL_SA_PASSWORD=sqlpass123"
+    ports:
+    - "1434:1433"
+
+  rabbitmq:
+    image: rabbitmq:3.12.1
+    ports:
+    - "5672:5672"
+    - "5671:5671"
+    - "15691:15691"
+    - "15692:15962"
+
+  rabbitmq.manager:
+    image: rabbitmq:3.12.1-management
+    ports:
+    - "15672:15672"
