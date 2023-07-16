@@ -7,6 +7,26 @@ const reducers = createReducer(
 
   on(OrderActions.loadOrdersSuccess, (state, { orders }) => {
     return orderAdapter.setAll(orders, state);
+  }),
+
+  on(OrderActions.createOrderSuccess, (state, action) => {
+    return orderAdapter.addOne({
+      orderId: action.tempId,
+      assemblyName: action.assemblyName,
+      partCount: 3
+    }, state);
+  }),
+
+  on(OrderActions.addOrder, (state, { order, tempId }) => {
+    if(tempId && state.entities[tempId]) {
+      state = orderAdapter.removeOne(tempId, state);
+    }
+
+    return orderAdapter.addOne(order, state);
+  }),
+
+  on(OrderActions.addOrderError, (state, { tempId }) => {
+    return orderAdapter.removeOne(tempId, state);
   })
 );
 

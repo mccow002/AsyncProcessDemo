@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { Order } from "../models";
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,14 @@ export class OrderHttpService {
     private readonly http: HttpClient
   ) { }
 
-  public createOrder(name: string): Observable<void> {
+  public loadOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>('https://localhost:44330/order');
+  }
+
+  public createOrder(name: string, tempId: number): Observable<void> {
     return this.http.post<void>('https://localhost:44330/order', {
-      assemblyName: name
+      assemblyName: name,
+      tempId: tempId
     });
   }
 }

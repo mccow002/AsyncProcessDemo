@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Handlers\OrderLineItems\" />
-    <Folder Include="Handlers\Orders\Commands\" />
+    <Folder Include="Handlers\Orders\Commands\EditOrder\" />
     <Folder Include="Handlers\Orders\ViewModels\" />
   </ItemGroup>
 

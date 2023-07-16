@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace AsyncDemo.Services.Handlers.Orders.Commands;
+namespace AsyncDemo.Services.Handlers.Orders.Commands.CreateOrder;
 
 public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
 {

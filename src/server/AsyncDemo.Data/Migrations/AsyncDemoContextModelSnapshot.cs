@@ -30,7 +30,7 @@ namespace AsyncDemo.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
-                    b.Property<string>("PartName")
+                    b.Property<string>("AssemblyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

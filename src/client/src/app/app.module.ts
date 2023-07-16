@@ -9,6 +9,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { ConnectionIdInterceptor } from "./data-access/interceptors/connection-id.interceptor";
 import { EffectsModule } from "@ngrx/effects";
 import { AsyncDemoEffects } from "./data-access/store/async-demo.effects";
+import { ToastrModule } from "ngx-toastr";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { AsyncDemoEffects } from "./data-access/store/async-demo.effects";
     }),
     EffectsModule.forRoot([
       AsyncDemoEffects
-    ])
+    ]),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     {

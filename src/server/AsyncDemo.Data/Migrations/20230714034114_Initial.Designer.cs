@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AsyncDemo.Data.Migrations
 {
     [DbContext(typeof(AsyncDemoContext))]
-    [Migration("20230712223744_Initial")]
+    [Migration("20230714034114_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace AsyncDemo.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
-                    b.Property<string>("PartName")
+                    b.Property<string>("AssemblyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

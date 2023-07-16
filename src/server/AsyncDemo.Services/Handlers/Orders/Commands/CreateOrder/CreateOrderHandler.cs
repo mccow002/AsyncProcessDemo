@@ -3,9 +3,9 @@ using AsyncDemo.Domain;
 using AsyncDemo.Domain.Domain;
 using MediatR;
 
-namespace AsyncDemo.Services.Handlers.Orders.Commands;
+namespace AsyncDemo.Services.Handlers.Orders.Commands.CreateOrder;
 
-public record CreateOrderRequest(string AssemblyName) : IRequest;
+public record CreateOrderRequest(int TempId, string AssemblyName) : IRequest;
 
 public class CreateOrderHandler : IRequestHandler<CreateOrderRequest>
 {
@@ -18,11 +18,16 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderRequest>
 
     public async Task Handle(CreateOrderRequest request, CancellationToken cancellationToken)
     {
+        if (request.AssemblyName == "Error")
+        {
+            throw new SimulatedException();
+        }
+
         var lineItem1 = GenerateFakeOrderLineItem("part1");
         var lineItem2 = GenerateFakeOrderLineItem("part2");
         var lineItem3 = GenerateFakeOrderLineItem("part3");
 
-        var order = Order.Create(request.AssemblyName, lineItem1, lineItem2, lineItem3);
+        var order = Order.Create(request.TempId, request.AssemblyName, lineItem1, lineItem2, lineItem3);
 
         _context.Add(order);
         await _context.SaveChangesAsync(cancellationToken);

@@ -1,6 +1,7 @@
 using AsyncDemo.Api.Hubs;
 using AsyncDemo.Api.Services;
 using AsyncDemo.Services;
+using AsyncDemo.Services.Core;
 using NLog.Web;
 using Rebus.Config;
 using Rebus.Pipeline;
@@ -24,6 +25,9 @@ builder.Services.AddCors(x => x.AddDefaultPolicy(p => p
 
 builder.Services.AddAsyncDemo(builder.Configuration);
 builder.Services.AddHostedService<AppStartService>();
+
+builder.Services.AddTransient<IClientUpdater, ClientUpdater>();
+builder.Services.AddTransient<ICurrentConnectionIdService, ConnectionIdService>();
 
 builder.Services.AddRebus((cfg, provider) => cfg
     .Logging(x => x.MicrosoftExtensionsLogging(provider.GetService<ILoggerFactory>()))
@@ -60,7 +64,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

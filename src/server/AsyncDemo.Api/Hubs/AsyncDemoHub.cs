@@ -28,14 +28,11 @@ public class AsyncDemoHub : Hub<IAsyncDemoHub>
 
 public interface IAsyncDemoHub
 {
-    [HubMethodName("domain-change")]
-    Task GroupNotification(GroupNotificationModel notification);
-
-    [HubMethodName("domain-change")]
-    Task GlobalNotification(GlobalNotificationModel notification);
+    [HubMethodName("notification")]
+    Task Notification(ClientNotificationModel notification);
 
     [HubMethodName("error")]
-    Task Error(ErrorNotificationModel error);
+    Task Error(ErrorContentModel error);
 
     [HubMethodName("success")]
     Task Success(SuccessNotificationModel message);

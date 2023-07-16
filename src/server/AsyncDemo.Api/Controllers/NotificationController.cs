@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace AsyncDemo.Api.Controllers;
 
 [ApiController]
-[Route("notification")]
+[Route("notifications")]
 public class NotificationController : ControllerBase
 {
     private readonly IHubContext<AsyncDemoHub, IAsyncDemoHub> _hubContext;
@@ -20,16 +20,16 @@ public class NotificationController : ControllerBase
     public async Task<IActionResult> Send(GroupNotificationModel notification)
     {
         await _hubContext.Clients.Groups(notification.GroupName)
-            .GroupNotification(notification);
+            .Notification(notification.Notification);
 
         return Ok();
     }
 
     [HttpPost("send-all")]
-    public async Task<IActionResult> SendAll(GlobalNotificationModel notification)
+    public async Task<IActionResult> SendAll(ClientNotificationModel notification)
     {
         await _hubContext.Clients.All
-            .GlobalNotification(notification);
+            .Notification(notification);
 
         return Ok();
     }
@@ -38,7 +38,7 @@ public class NotificationController : ControllerBase
     public async Task<IActionResult> Error(ErrorNotificationModel error)
     {
         await _hubContext.Clients.Client(error.ConnectionId)
-            .Error(error);
+            .Error(error.Payload);
 
         return Ok();
     }

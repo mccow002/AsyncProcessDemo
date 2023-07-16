@@ -9,12 +9,12 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace AsyncDemo.Services.Handlers.Orders.Commands;
+namespace AsyncDemo.Services.Handlers.Orders.Commands.CreateOrder;
 
-public record OrderCreatedClientMessage(OrderCreatedPayload Payload) 
+public record OrderCreatedClientMessage(OrderCreatedPayload Payload)
     : ClientNotification<OrderCreatedPayload>(Payload, "OrderCreated");
 
-public record OrderCreatedPayload(OrderViewModel Order) : IClientNotificationPayload;
+public record OrderCreatedPayload(OrderViewModel Order, int TempId) : IClientNotificationPayload;
 
 public class CreateOrderNotifyClient : INotificationHandler<OrderCreatedEvent>
 {
@@ -23,8 +23,8 @@ public class CreateOrderNotifyClient : INotificationHandler<OrderCreatedEvent>
     private readonly IClientUpdater _clientUpdater;
 
     public CreateOrderNotifyClient(
-        AsyncDemoContext context, 
-        IMapper mapper, 
+        AsyncDemoContext context,
+        IMapper mapper,
         IClientUpdater clientUpdater
     )
     {
@@ -40,7 +40,8 @@ public class CreateOrderNotifyClient : INotificationHandler<OrderCreatedEvent>
             .ProjectTo<OrderViewModel>(_mapper.ConfigurationProvider)
             .FirstAsync(cancellationToken);
 
-        var clientMessage = new OrderCreatedPayload(orderModel);
+        var clientMessage = new OrderCreatedPayload(orderModel, notification.TempId);
         await _clientUpdater.SendAll(new OrderCreatedClientMessage(clientMessage), cancellationToken);
+        await _clientUpdater.Success("Order Successfully Created!", cancellationToken);
     }
 }

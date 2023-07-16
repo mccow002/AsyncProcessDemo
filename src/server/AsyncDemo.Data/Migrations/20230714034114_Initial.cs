@@ -17,7 +17,7 @@ namespace AsyncDemo.Data.Migrations
                 {
                     OrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PartName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AssemblyName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

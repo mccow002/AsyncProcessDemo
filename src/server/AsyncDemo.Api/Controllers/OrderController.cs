@@ -1,4 +1,5 @@
-﻿using AsyncDemo.Services.Handlers.Orders.Commands;
+﻿using AsyncDemo.Services.Handlers.Orders.Commands.CreateOrder;
+using AsyncDemo.Services.Handlers.Orders.Queries.GetOrders;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,18 @@ namespace AsyncDemo.Api.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly IBus _bus;
+    private readonly IMediator _mediator;
 
-    public OrderController(IBus bus)
+    public OrderController(IBus bus, IMediator mediator)
     {
         _bus = bus;
+        _mediator = mediator;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        return Ok(await _mediator.Send(new GetOrdersRequest()));
     }
 
     [HttpPost]

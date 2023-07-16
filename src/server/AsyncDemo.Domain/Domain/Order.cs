@@ -21,10 +21,16 @@ public class Order : Entity
 
     public IReadOnlyCollection<OrderLineItem> OrderLineItems => _orderLineItems.ToList().AsReadOnly();
 
-    public static Order Create(string partName, params OrderLineItem[] orderLineItems)
+    public void UpdateAssemblyName(string assemblyName)
+    {
+        AssemblyName = assemblyName;
+        AddDomainEvent(new OrderEditedEvent(this));
+    }
+
+    public static Order Create(int tempId, string partName, params OrderLineItem[] orderLineItems)
     {
         var order = new Order(partName, orderLineItems.ToList());
-        order.AddDomainEvent(new OrderCreatedEvent(order));
+        order.AddDomainEvent(new OrderCreatedEvent(tempId, order));
         return order;
     }
 }

@@ -1,13 +1,13 @@
 version: '3.4'
 
 services:
-  asyncdemo.api:
+  api:
     image: ${DOCKER_REGISTRY-}asyncdemoapi
     build:
       context: .
       dockerfile: AsyncDemo.Api/Dockerfile
 
-  asyncdemo.messageprocessor:
+  messageprocessor:
     image: ${DOCKER_REGISTRY-}asyncdemo-messageprocessor
     build:
       context: .
@@ -17,7 +17,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
     - "ACCEPT_EULA=Y"
-    - "MSSQL_SA_PASSWORD=sqlpass123"
+    - "MSSQL_SA_PASSWORD=SqlPass123"
     ports:
     - "1434:1433"
 

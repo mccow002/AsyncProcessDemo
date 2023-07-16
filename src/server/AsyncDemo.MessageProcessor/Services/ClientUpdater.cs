@@ -23,7 +23,7 @@ public class ClientUpdater : IClientUpdater
 
     public async Task SendGroup<T>(GroupNotification<T> notification, CancellationToken token) where T : IClientNotificationPayload
     {
-        var req = new HttpRequestMessage(HttpMethod.Post, "notifications/send");
+        var req = new HttpRequestMessage(HttpMethod.Post, "notifications/send-group");
         req.Content = new StringContent(JsonSerializer.Serialize(notification, _jsonOpts), Encoding.UTF8, "application/json");
         var rsp = await _client.SendAsync(req, token);
 
