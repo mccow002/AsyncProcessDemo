@@ -11,12 +11,10 @@ namespace AsyncDemo.Api.Controllers;
 [ApiController]
 public class OrderController : ControllerBase
 {
-    private readonly IBus _bus;
     private readonly IMediator _mediator;
 
-    public OrderController(IBus bus, IMediator mediator)
+    public OrderController(IMediator mediator)
     {
-        _bus = bus;
         _mediator = mediator;
     }
 
@@ -27,11 +25,11 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreateOrderRequest request)
+    public async Task<IActionResult> Post([FromBody] CreateOrderRequest request, CancellationToken token)
     {
         try
         {
-            await _bus.Send(request);
+            await _mediator.Send(request, token);
             return Ok();
         }
         catch (ValidationException ex)

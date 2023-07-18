@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="card-footer" *ngIf="mode === 'Add'">
-    <button class="btn btn-primary" (click)="createOrder()">Create</button>
+    <button class="btn btn-primary" (click)="createOrder()" [disabled]="isWorking">{{isWorking ? 'Saving...' : 'Create'}}</button>
   </div>
   <div class="card-footer" *ngIf="mode === 'Edit'">
     <button class="btn btn-primary" (click)="saveOrder()">Save</button>

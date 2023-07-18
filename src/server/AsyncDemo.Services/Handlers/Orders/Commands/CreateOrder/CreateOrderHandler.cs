@@ -23,6 +23,8 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderRequest>
             throw new SimulatedException();
         }
 
+        await Task.Delay(2000, cancellationToken);
+
         var lineItem1 = GenerateFakeOrderLineItem("part1");
         var lineItem2 = GenerateFakeOrderLineItem("part2");
         var lineItem3 = GenerateFakeOrderLineItem("part3");

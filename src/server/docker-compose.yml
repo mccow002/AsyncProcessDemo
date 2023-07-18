@@ -6,12 +6,6 @@ services:
     build:
       context: .
       dockerfile: AsyncDemo.Api/Dockerfile
-
-  messageprocessor:
-    image: ${DOCKER_REGISTRY-}asyncdemo-messageprocessor
-    build:
-      context: .
-      dockerfile: AsyncDemo.MessageProcessor/Dockerfile
   
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
