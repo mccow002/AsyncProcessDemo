@@ -12,3 +12,19 @@ export type OrderCreatedNotification = {
 export type OrderCreatedErrorNotification = {
   tempId: number;
 }
+
+export type OrderUpdatedNotification = {
+  order: Order;
+}
+
+export type UpdateOrderError = {
+  order: Order;
+}
+
+export type OrderDeletedNotification = {
+  orderId: number;
+}
+
+export type DeleteOrderError = {
+  order: Order
+}

@@ -9,7 +9,7 @@ const reducers = createReducer(
     return orderAdapter.setAll(orders, state);
   }),
 
-  on(OrderActions.createOrderSuccess, (state, action) => {
+  on(OrderActions.createOrderOptimisticUpdate, (state, action) => {
     return orderAdapter.addOne({
       orderId: action.tempId,
       assemblyName: action.assemblyName,
@@ -17,7 +17,7 @@ const reducers = createReducer(
     }, state);
   }),
 
-  on(OrderActions.addOrder, (state, { order, tempId }) => {
+  on(OrderActions.orderAdded, (state, { order, tempId }) => {
     if(tempId && state.entities[tempId]) {
       state = orderAdapter.removeOne(tempId, state);
     }
@@ -25,9 +25,43 @@ const reducers = createReducer(
     return orderAdapter.addOne(order, state);
   }),
 
-  on(OrderActions.addOrderError, (state, { tempId }) => {
+  on(OrderActions.createOrderError, (state, { tempId }) => {
     return orderAdapter.removeOne(tempId, state);
-  })
+  }),
+
+  on(OrderActions.editOrderOptimisticUpdate, (state, { order }) => {
+    return orderAdapter.updateOne({
+      id: order.orderId,
+      changes: {
+        ...order
+      }
+    }, state);
+  }),
+
+  on(OrderActions.editOrderError, (state, { order }) => {
+    return orderAdapter.updateOne({
+      id: order.orderId,
+      changes: {
+        ...order
+      }
+    }, state);
+  }),
+
+  on(OrderActions.orderUpdated, (state, { changes }) => {
+    return orderAdapter.updateOne(changes, state);
+  }),
+
+  on(OrderActions.deleteOrderOptimisticUpdate, (state, { orderId }) => {
+    return orderAdapter.removeOne(orderId, state);
+  }),
+
+  on(OrderActions.deleteOrderError, (state, { order }) => {
+    return orderAdapter.addOne(order, state);
+  }),
+
+  on(OrderActions.orderDeleted, (state, { orderId }) => {
+    return orderAdapter.removeOne(orderId, state);
+  }),
 );
 
 export function ordersReducers(state: OrderState | undefined, action: Action) {

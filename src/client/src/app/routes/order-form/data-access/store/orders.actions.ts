@@ -11,7 +11,7 @@ export const OrderActions = createActionGroup({
     'Create Order Optimistic Update': props<{ assemblyName: string, tempId: number }>(),
     'Create Order Error': props<{ tempId: number }>(),
 
-    'Edit Order': props<{ orderId: number, assemblyName: string }>(),
+    'Edit Order': props<{ order: Order }>(),
     'Edit Order Optimistic Update': props<{ order: Order }>(),
     'Edit Order Error': props<{ order: Order }>(),
 
@@ -19,8 +19,8 @@ export const OrderActions = createActionGroup({
     'Delete Order Optimistic Update': props<{ orderId: number }>(),
     'Delete Order Error': props<{ order: Order }>(),
 
-    'Add Order': props<{ order: Order, tempId?: number }>(),
-    'Update Order': props<{ changes: Update<Order> }>(),
-    'Remove Order': props<{ orderId: number }>()
+    'Order Added': props<{ order: Order, tempId?: number }>(),
+    'Order Updated': props<{ changes: Update<Order> }>(),
+    'Order Deleted': props<{ orderId: number }>()
   }
 });

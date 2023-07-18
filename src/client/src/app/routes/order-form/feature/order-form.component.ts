@@ -7,6 +7,8 @@ import { Observable } from "rxjs";
 import { Order } from "../data-access/models";
 import { ToastrService } from "ngx-toastr";
 
+type Mode = 'Add' | 'Edit';
+
 @Component({
   selector: 'app-order-form',
   templateUrl: './order-form.component.html',
@@ -16,11 +18,13 @@ export class OrderFormComponent implements OnInit {
 
   assemblyNameCtrl = new FormControl<string>('', Validators.required);
 
+  mode: Mode = 'Add';
+  editingOrder: Order | undefined;
+
   orders$: Observable<Order[]> = this.store.select(fromOrders.getOrders);
 
   constructor(
-    private readonly store: Store,
-    private readonly toast: ToastrService
+    private readonly store: Store
   ) {
   }
 
@@ -32,14 +36,47 @@ export class OrderFormComponent implements OnInit {
     return item.orderId;
   }
 
-  createOrder(){
-    if(this.assemblyNameCtrl.invalid) {
+  createOrder() {
+    if (this.assemblyNameCtrl.invalid) {
       return;
     }
 
     this.store.dispatch(OrderActions.createOrder({
       assemblyName: this.assemblyNameCtrl.value ?? ''
     }));
+
+    this.assemblyNameCtrl.setValue('');
+  }
+
+  beginEdit(order: Order) {
+    this.mode = 'Edit';
+    this.editingOrder = order;
+    this.assemblyNameCtrl.setValue(order.assemblyName);
+  }
+
+  saveOrder() {
+    if (this.editingOrder && this.assemblyNameCtrl.value) {
+      this.store.dispatch(OrderActions.editOrder({
+        order: {
+          ...this.editingOrder,
+          assemblyName: this.assemblyNameCtrl.value
+        }
+      }));
+    }
+
+    this.mode = 'Add';
+    this.editingOrder = undefined;
+    this.assemblyNameCtrl.setValue('');
+  }
+
+  cancel() {
+    this.mode = 'Add';
+    this.editingOrder = undefined;
+    this.assemblyNameCtrl.setValue('');
+  }
+
+  deleteOrder(order: Order) {
+    this.store.dispatch(OrderActions.deleteOrder({orderId: order.orderId}));
   }
 
 }

@@ -39,4 +39,16 @@ public class OrderController : ControllerBase
             return BadRequest(ex.ToString());
         }
     }
+
+    [HttpPut]
+    public async Task<IActionResult> Put()
+    {
+        return Ok();
+    }
+
+    [HttpDelete("{orderId}")]
+    public async Task<IActionResult> Delete(int orderId)
+    {
+        return Ok();
+    }
 }

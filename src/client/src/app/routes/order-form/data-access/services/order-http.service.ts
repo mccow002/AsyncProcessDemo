@@ -22,4 +22,15 @@ export class OrderHttpService {
       tempId: tempId
     });
   }
+
+  public updateOrder(orderId: number, assemblyName: string): Observable<void> {
+    return this.http.put<void>('https://localhost:44330/order', {
+      orderId,
+      assemblyName
+    });
+  }
+
+  public deleteOrder(orderId: number): Observable<void> {
+    return this.http.delete<void>(`https://localhost:44330/order/${orderId}`);
+  }
 }
