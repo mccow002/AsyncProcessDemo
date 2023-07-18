@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from "@angular/forms";
-import { Store } from "@ngrx/store";
+import { FormControl, Validators } from "@angular/forms";
+import { ActionsSubject, Store } from "@ngrx/store";
 import { OrderActions } from "../data-access/store/orders.actions";
 import { fromOrders } from "../data-access/store";
 import { Observable } from "rxjs";
 import { Order } from "../data-access/models";
-import { ToastrService } from "ngx-toastr";
+import { ofType } from "@ngrx/effects";
 
 type Mode = 'Add' | 'Edit';
 
@@ -20,16 +20,25 @@ export class OrderFormComponent implements OnInit {
 
   mode: Mode = 'Add';
   editingOrder: Order | undefined;
+  isWorking = false;
 
   orders$: Observable<Order[]> = this.store.select(fromOrders.getOrders);
 
   constructor(
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly actions$: ActionsSubject
   ) {
   }
 
   ngOnInit() {
     this.store.dispatch(OrderActions.loadOrders());
+
+    this.actions$.pipe(
+      ofType(OrderActions.createOrderOptimisticUpdate)
+    ).subscribe(() => {
+      this.isWorking = false;
+      this.assemblyNameCtrl.setValue('');
+    });
   }
 
   orderTrackBy(index: number, item: Order) {
@@ -41,11 +50,10 @@ export class OrderFormComponent implements OnInit {
       return;
     }
 
+    this.isWorking = true;
     this.store.dispatch(OrderActions.createOrder({
       assemblyName: this.assemblyNameCtrl.value ?? ''
     }));
-
-    this.assemblyNameCtrl.setValue('');
   }
 
   beginEdit(order: Order) {

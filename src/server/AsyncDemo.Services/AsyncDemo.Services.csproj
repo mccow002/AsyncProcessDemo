@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Handlers\OrderLineItems\**" />
+    <EmbeddedResource Remove="Handlers\OrderLineItems\**" />
+    <None Remove="Handlers\OrderLineItems\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="FluentValidation" Version="11.6.0" />
@@ -21,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\OrderLineItems\" />
     <Folder Include="Handlers\Orders\Commands\EditOrder\" />
     <Folder Include="Handlers\Orders\ViewModels\" />
   </ItemGroup>

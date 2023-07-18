@@ -21,7 +21,46 @@
     <tr>
       <th style="width: 200px"></th>
       <th>Order Id</th>
-      <th>Assembly Name</th>
+      <th>Assembly Name</th><h4>Orders</h4>
+
+      <div class="card w-25">
+        <div class="card-body">
+          <div>
+            <label class="form-label">Assembly Name: </label>
+            <input type="text" [formControl]="assemblyNameCtrl" class="form-control"/>
+          </div>
+        </div>
+        <div class="card-footer" *ngIf="mode === 'Add'">
+          <button class="btn btn-primary" (click)="createOrder()" [disabled]="isWorking">{{isWorking ? 'Saving...' : 'Create'}}</button>
+        </div>
+        <div class="card-footer" *ngIf="mode === 'Edit'">
+          <button class="btn btn-primary" (click)="saveOrder()">Save</button>
+          <button class="btn btn-light" (click)="cancel()">Cancel</button>
+        </div>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th style="width: 200px"></th>
+          <th>Order Id</th>
+          <th>Assembly Name</th>
+          <th>Total Parts</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let order of orders$ | async; trackBy: orderTrackBy">
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="beginEdit(order)" [disabled]="order.orderId < 0">Edit</button>
+            <button class="btn btn-sm btn-danger ms-1" (click)="deleteOrder(order)" [disabled]="order.orderId < 0">Delete</button>
+          </td>
+          <td>{{order.orderId}}</td>
+          <td>{{order.assemblyName}}</td>
+          <td>{{order.partCount}}</td>
+        </tr>
+        </tbody>
+      </table>
+
       <th>Total Parts</th>
     </tr>
   </thead>
